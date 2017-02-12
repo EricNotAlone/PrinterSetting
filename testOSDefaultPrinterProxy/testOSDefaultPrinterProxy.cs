@@ -1,9 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using System.Collections.Generic;
 using System.Drawing.Printing;
-using System.Linq;
 using PrinterSetting.Util;
 
 
@@ -69,15 +67,17 @@ namespace testOSDefaultPrinterProxy
         public void TestSetDefaultPrinter()
         {
             string expectPrinterName = "Fax";
-            string errorPrinterName = "沒有設定預設印表機。";
             string testPrinterName;
+
 
             if (!osPrintProxy.SetDefaultPrinter(expectPrinterName))
             {
                 throw new NullReferenceException("Method failed");
             }
 
+
             testPrinterName = new PrintDocument().PrinterSettings.PrinterName;
+
 
             if (!expectPrinterName.Equals(testPrinterName))
             {
@@ -85,17 +85,25 @@ namespace testOSDefaultPrinterProxy
             }
 
 
+
             if (!osPrintProxy.SetDefaultPrinter(string.Empty))
             {
                 throw new NullReferenceException("Method failed");
             }
 
+
             testPrinterName = new PrintDocument().PrinterSettings.PrinterName;
 
-            if (!errorPrinterName.Equals(testPrinterName))
+
+            foreach (string printerName in PrinterSettings.InstalledPrinters)
             {
-                throw new ArgumentException("沒有取消系統預設印表機");
+
+                if (testPrinterName.Contains(printerName))
+                {
+                    throw new ArgumentException("沒有取消系統預設印表機");
+                }
             }
+
 
         }
 

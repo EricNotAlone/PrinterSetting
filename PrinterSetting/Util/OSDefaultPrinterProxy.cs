@@ -50,11 +50,13 @@ namespace PrinterSetting.Util
         {
             try
             {
-                PrintDocument pd = new PrintDocument();
+                using (PrintDocument pd = new PrintDocument())
+                {
 
-                OSDefaultPrinter = pd.PrinterSettings.PrinterName;
+                    OSDefaultPrinter = pd.PrinterSettings.PrinterName;
 
-                return true;
+                    return true;
+                }
 
             }
             catch
@@ -72,20 +74,22 @@ namespace PrinterSetting.Util
         {
             try
             {
-                PrintDocument printDoc = new PrintDocument();
-                string OSdefaultPrinter;
-
-
-                OSPrinterList = new List<string>();
-                OSdefaultPrinter = printDoc.PrinterSettings.PrinterName;
-
-
-                foreach (string printerName in PrinterSettings.InstalledPrinters)
+                using (PrintDocument printDoc = new PrintDocument())
                 {
-                    OSPrinterList.Add(printerName);
-                }
+                    string OSdefaultPrinter;
 
-                return true;
+
+                    OSPrinterList = new List<string>();
+                    OSdefaultPrinter = printDoc.PrinterSettings.PrinterName;
+
+
+                    foreach (string printerName in PrinterSettings.InstalledPrinters)
+                    {
+                        OSPrinterList.Add(printerName);
+                    }
+
+                    return true;
+                }
 
             }
             catch(Exception EX)
